@@ -49,7 +49,7 @@
             
             <div class="flex justify-between items-center py-3 hover:bg-gray-50 px-2 rounded transition">
               <span class="font-semibold text-gray-700">Updated:</span>
-              <span class="text-gray-600">{{ formatDate(selectedInvoice.updated_at) }}</span>
+              <span class="text-gray-600">{{ selectedInvoice.updated_at ? formatDate(selectedInvoice.updated_at) : "-" }}</span>
             </div>
           </div>
         </div>
@@ -85,6 +85,9 @@
       year: "numeric",
       month: "short",
       day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
     });
   };
   

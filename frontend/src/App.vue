@@ -5,7 +5,7 @@ import { useAuthStore } from '@/stores/authStore'
 
 const authStore = useAuthStore()
 const router = useRouter()
-const isLoggedIn = ref(!!sessionStorage.getItem('token'))
+const isLoggedIn = ref(!!(sessionStorage.getItem('token') ?? authStore.token))
 
 const logout = () => {
   authStore.clear()

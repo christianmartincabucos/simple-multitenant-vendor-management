@@ -14,12 +14,16 @@ class InvoiceResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $createdAt = $this->created_at ? $this->created_at->toIso8601String() : null;
+        $updatedAt = $this->updated_at ? $this->updated_at->toIso8601String() : null;
+
         return [
             'id' => $this->id,
             'vendor_id' => $this->vendor_id,
             'amount' => (float) $this->amount,
             'status' => $this->status,
-            'created_at' => $this->created_at->toIso8601String(),
+            'created_at' => $createdAt,
+            'updated_at' => ($createdAt === $updatedAt) ? null : $updatedAt,
         ];
     }
 }

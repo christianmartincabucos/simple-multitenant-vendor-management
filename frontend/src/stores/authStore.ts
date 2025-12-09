@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import type { User, Organization } from "@/types";
+import { authApi } from "@/api/auth"; // Make sure this import matches your project structure
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -28,6 +29,14 @@ export const useAuthStore = defineStore("auth", {
       sessionStorage.removeItem("token");
       sessionStorage.removeItem("user");
       sessionStorage.removeItem("organization");
+    },
+    async login(email: string, password: string) {
+      const res = await authApi.login(email, password);
+      this.set(res.token, res.user, res.organization);
+    },
+    async logout() {
+      await authApi.logout();
+      this.clear();
     },
   },
 });
