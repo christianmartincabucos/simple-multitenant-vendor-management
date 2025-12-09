@@ -19,7 +19,7 @@ const logout = () => {
       <div class="max-w-7xl mx-auto px-6 py-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-8">
-            <RouterLink to="/" class="text-2xl font-bold text-gray-900">CPRAS</RouterLink to="/">
+            <RouterLink to="/" class="text-2xl font-bold text-gray-900">CPRAS</RouterLink>
             <div class="flex gap-8">
               <RouterLink 
                 to="/" 
