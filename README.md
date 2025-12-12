@@ -42,8 +42,3 @@
 ## Database
 
 - MySQL is used. Default credentials are in `.env.example`.
-
-## GitHub
-
-- Please commit with meaningful messages.
-- Ensure `.gitignore` excludes `vendor`, `node_modules`, `.env`, etc.
