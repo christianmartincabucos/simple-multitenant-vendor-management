@@ -1,11 +1,11 @@
-# Vendor Management System
+# Simple Multi Tenant Vendor Management System
 
 ## Setup
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/vendor-management.git
-   cd vendor-management
+   git clone https://github.com/christianmartincabucos/simple-multitenant-vendor-management.git
+   cd simple-multitenant-vendor-management
    ```
 
 2. Copy `.env.example` to `.env` and set your environment variables.
