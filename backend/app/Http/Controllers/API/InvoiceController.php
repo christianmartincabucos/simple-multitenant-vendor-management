@@ -1,18 +1,23 @@
 <?php
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use App\Services\InvoiceService;
-use App\Http\Requests\InvoiceStoreRequest;
-use App\Http\Requests\InvoiceIndexRequest;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
 use App\Http\Resources\InvoiceResource;
+use App\Models\Invoice;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class InvoiceController extends Controller
 {
-    public function __construct(protected InvoiceService $service) {}
+    use AuthorizesRequests;
+
+    public function __construct(protected InvoiceService $service) 
+    {
+        $this->authorizeResource(Invoice::class, 'invoice');
+    }
 
     public function index(Request $request)
     {
@@ -29,22 +34,19 @@ class InvoiceController extends Controller
         return new InvoiceResource($invoice);
     }
 
-    public function show(int $id)
+    public function show(Invoice $invoice)
     {
-        $invoice = $this->service->findOrFail($id);
         return new InvoiceResource($invoice);
     }
 
-    public function update(UpdateInvoiceRequest $request, int $id)
+    public function update(UpdateInvoiceRequest $request, Invoice $invoice)
     {
-        $invoice = $this->service->findOrFail($id);
         $updated = $this->service->update($invoice, $request->validated(), $request->user());
         return new InvoiceResource($updated);
     }
 
-    public function destroy(int $id)
+    public function destroy(Invoice $invoice)
     {
-        $invoice = $this->service->findOrFail($id);
         $this->service->delete($invoice, request()->user());
         return response()->noContent();
     }

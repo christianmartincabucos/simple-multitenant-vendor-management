@@ -1,11 +1,11 @@
 <?php
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
 use App\Http\Resources\UserResource;
+use Illuminate\Routing\Controller;
 
 class UserController extends Controller
 {

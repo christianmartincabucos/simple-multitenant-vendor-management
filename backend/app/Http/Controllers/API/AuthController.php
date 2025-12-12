@@ -1,10 +1,10 @@
 <?php
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller

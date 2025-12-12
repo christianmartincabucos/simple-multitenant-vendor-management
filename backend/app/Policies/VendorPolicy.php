@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\Vendor;
-use Illuminate\Auth\Access\Response;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class VendorPolicy
 {
@@ -13,7 +13,7 @@ class VendorPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +21,11 @@ class VendorPolicy
      */
     public function view(User $user, Vendor $vendor): bool
     {
-        return false;
+        if (!$user->isAdmin() && $user->organization_id !== $vendor->organization_id) {
+            throw new AuthorizationException('You cannot update this vendor.');
+        }
+    
+        return true;
     }
 
     /**
@@ -29,7 +33,11 @@ class VendorPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        if (!$user->isAdmin()) {
+            throw new AuthorizationException('You are not authorized to create a vendor.');
+        }
+
+        return true;
     }
 
     /**
@@ -37,7 +45,11 @@ class VendorPolicy
      */
     public function update(User $user, Vendor $vendor): bool
     {
-        return false;
+        if (!$user->isAdmin()) {
+            throw new AuthorizationException('You cannot update this vendor.');
+        }
+    
+        return true;
     }
 
     /**
@@ -45,22 +57,11 @@ class VendorPolicy
      */
     public function delete(User $user, Vendor $vendor): bool
     {
-        return false;
+        if (!$user->isAdmin()) {
+            throw new AuthorizationException('You cannot delete this vendor.');
+        }
+    
+        return true;
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Vendor $vendor): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Vendor $vendor): bool
-    {
-        return false;
-    }
 }

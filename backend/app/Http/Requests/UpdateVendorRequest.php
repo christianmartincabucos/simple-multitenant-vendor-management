@@ -11,7 +11,7 @@ class UpdateVendorRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,10 +22,10 @@ class UpdateVendorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['sometimes', 'string'],
-            'email' => ['sometimes', 'email'],
-            'phone' => ['sometimes', 'string'],
-            'address' => ['sometimes', 'string'],
+            'name' => 'sometimes|required|string',
+            'email' => 'sometimes|nullable|email',
+            'phone' => 'sometimes|nullable|string',
+            'address' => 'sometimes|nullable|string',
         ];
     }
 }

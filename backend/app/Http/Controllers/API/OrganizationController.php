@@ -2,27 +2,31 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrganizationRequest;
 use App\Http\Requests\UpdateOrganizationRequest;
 use App\Models\Organization;
+use App\Repositories\Contracts\OrganizationRepositoryInterface;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Routing\Controller;
 
 class OrganizationController extends Controller
 {
+    use AuthorizesRequests;
+
+    protected $organizationRepository;
+
+    public function __construct(OrganizationRepositoryInterface $organizationRepository)
+    {
+        $this->authorizeResource(Organization::class, 'organization');
+        $this->organizationRepository = $organizationRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return $this->organizationRepository->all();
     }
 
     /**
@@ -30,7 +34,7 @@ class OrganizationController extends Controller
      */
     public function store(StoreOrganizationRequest $request)
     {
-        //
+        return $this->organizationRepository->create($request->validated());
     }
 
     /**
@@ -38,15 +42,7 @@ class OrganizationController extends Controller
      */
     public function show(Organization $organization)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Organization $organization)
-    {
-        //
+        return $this->organizationRepository->find($organization->id);
     }
 
     /**
@@ -54,7 +50,7 @@ class OrganizationController extends Controller
      */
     public function update(UpdateOrganizationRequest $request, Organization $organization)
     {
-        //
+        return $this->organizationRepository->update($organization, $request->validated());
     }
 
     /**
@@ -62,6 +58,7 @@ class OrganizationController extends Controller
      */
     public function destroy(Organization $organization)
     {
-        //
+        $this->organizationRepository->delete($organization);
+        return response()->noContent();
     }
 }

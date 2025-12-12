@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Organization;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Access\Response;
 
 class OrganizationPolicy
@@ -13,7 +14,7 @@ class OrganizationPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +22,11 @@ class OrganizationPolicy
      */
     public function view(User $user, Organization $organization): bool
     {
-        return false;
+        if (!$user->isAdmin() && $user->organization_id !== $organization->id) {
+            throw new AuthorizationException('You cannot view this organization.');
+        }
+
+        return true;
     }
 
     /**
@@ -29,7 +34,11 @@ class OrganizationPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        if (!$user->isAdmin()) {
+            throw new AuthorizationException('You are not authorized to create an organization.');
+        }
+
+        return true;
     }
 
     /**
@@ -37,7 +46,11 @@ class OrganizationPolicy
      */
     public function update(User $user, Organization $organization): bool
     {
-        return false;
+        if (!$user->isAdmin()) {
+            throw new AuthorizationException('You are not authorized to create an organization.');
+        }
+
+        return true;
     }
 
     /**
@@ -45,22 +58,10 @@ class OrganizationPolicy
      */
     public function delete(User $user, Organization $organization): bool
     {
-        return false;
-    }
+        if (!$user->isAdmin()) {
+            throw new AuthorizationException('You are not authorized to create an organization.');
+        }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Organization $organization): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Organization $organization): bool
-    {
-        return false;
+        return true;
     }
 }

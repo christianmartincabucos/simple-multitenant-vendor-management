@@ -11,9 +11,11 @@ use App\Repositories\Contracts\VendorRepositoryInterface;
 use App\Repositories\Eloquent\VendorRepository;
 
 use App\Repositories\Contracts\InvoiceRepositoryInterface;
+use App\Repositories\Contracts\OrganizationRepositoryInterface;
 use App\Repositories\Eloquent\InvoiceRepository;
 
 use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\Eloquent\OrganizationRepository;
 use App\Repositories\Eloquent\UserRepository;
 
 class AppServiceProvider extends ServiceProvider
@@ -32,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(VendorRepositoryInterface::class, VendorRepository::class);
         $this->app->bind(InvoiceRepositoryInterface::class, InvoiceRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(OrganizationRepositoryInterface::class, OrganizationRepository::class);
     }
 
     /**

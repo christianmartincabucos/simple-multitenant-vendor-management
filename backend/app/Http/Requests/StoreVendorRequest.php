@@ -11,7 +11,7 @@ class StoreVendorRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,10 +22,10 @@ class StoreVendorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string'],
-            'email' => ['nullable', 'email'],
-            'phone' => ['nullable', 'string'],
-            'address' => ['nullable', 'string'],
+            'name' => 'required|string',
+            'email' => 'required|email|unique:vendors,email',
+            'phone' => 'required|string',
+            'address' => 'required|string',
         ];
     }
 }

@@ -17,4 +17,16 @@ class Vendor extends Model
         'phone',
         'address',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Automatically set organization_id on creation
+        static::creating(function ($vendor) {
+            if (auth()->check() && auth()->user()->organization_id) {
+                $vendor->organization_id = auth()->user()->organization_id;
+            }
+        });
+    }
 }

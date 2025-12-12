@@ -11,7 +11,7 @@ class UpdateInvoiceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdateInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'vendor_id' => 'required|integer|exists:vendors,id',
+            'amount' => 'required|numeric|min:0',
+            'status' => 'in:draft,paid,overdue'
         ];
     }
 }

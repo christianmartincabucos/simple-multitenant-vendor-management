@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Invoice;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Access\Response;
 
 class InvoicePolicy
@@ -13,7 +14,7 @@ class InvoicePolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +22,11 @@ class InvoicePolicy
      */
     public function view(User $user, Invoice $invoice): bool
     {
-        return false;
+        if (!$user->isAdmin() && $user->organization_id !== $invoice->organization_id) {
+            throw new AuthorizationException('You cannot view this invoice.');
+        }
+
+        return true;
     }
 
     /**
@@ -29,7 +34,11 @@ class InvoicePolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        if (!$user->isAdmin()) {
+            throw new AuthorizationException('You are not authorized to create an invoice.');
+        }
+
+        return true;
     }
 
     /**
@@ -37,7 +46,11 @@ class InvoicePolicy
      */
     public function update(User $user, Invoice $invoice): bool
     {
-        return false;
+        if (!$user->isAdmin()) {
+            throw new AuthorizationException('You cannot update this invoice.');
+        }
+
+        return true;
     }
 
     /**
@@ -45,22 +58,10 @@ class InvoicePolicy
      */
     public function delete(User $user, Invoice $invoice): bool
     {
-        return false;
-    }
+        if (!$user->isAdmin()) {
+            throw new AuthorizationException('You cannot delete this invoice.');
+        }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Invoice $invoice): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Invoice $invoice): bool
-    {
-        return false;
+        return true;
     }
 }

@@ -4,18 +4,17 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Services\TenantService;
-
+use Illuminate\Http\Request;
 
 class SetTenantFromAuth {
-    public function handle($request, Closure $next) {
+    public function handle(Request $request, Closure $next)
+    {
         $user = $request->user();
 
-        if($user) {
-            $org = $user->organization;
-            if(!$org) return response()->json(['message' => 'Organization not found'], 403);
-            app(TenantService::class)->setOrganization($org);
+        if ($user && $user->organization) {
+            app(TenantService::class)->setOrganization($user->organization);
         }
-        
+
         return $next($request);
     }
 }

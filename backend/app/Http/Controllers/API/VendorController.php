@@ -1,16 +1,23 @@
 <?php
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVendorRequest;
 use App\Http\Requests\UpdateVendorRequest;
 use App\Repositories\Contracts\VendorRepositoryInterface;
 use App\Http\Requests\VendorStoreRequest;
 use App\Http\Resources\VendorResource;
+use App\Models\Vendor;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Routing\Controller;
 
 class VendorController extends Controller
 {
-    public function __construct(protected VendorRepositoryInterface $vendors) {}
+    use AuthorizesRequests;
+
+    public function __construct(protected VendorRepositoryInterface $vendors) 
+    {
+        $this->authorizeResource(Vendor::class, 'vendor');
+    }
 
     public function index()
     {
@@ -24,22 +31,19 @@ class VendorController extends Controller
         return new VendorResource($vendor);
     }
 
-    public function show(int $id)
+    public function show(Vendor $vendor)
     {
-        $vendor = $this->vendors->findOrFail($id);
         return new VendorResource($vendor);
     }
 
-    public function update(UpdateVendorRequest $request, int $id)
+    public function update(UpdateVendorRequest $request, Vendor $vendor)
     {
-        $vendor = $this->vendors->findOrFail($id);
         $updated = $this->vendors->update($vendor, $request->validated());
         return new VendorResource($updated);
     }
 
-    public function destroy(int $id)
+    public function destroy(Vendor $vendor)
     {
-        $vendor = $this->vendors->findOrFail($id);
         $this->vendors->delete($vendor);
         return response()->noContent();
     }

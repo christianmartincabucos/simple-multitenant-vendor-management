@@ -11,8 +11,11 @@
 |
 */
 
+use App\Models\User;
+use App\Services\TenantService;
+
 pest()->extend(Tests\TestCase::class)
- // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+ ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
     ->in('Feature');
 
 /*
@@ -30,6 +33,13 @@ expect()->extend('toBeOne', function () {
     return $this->toBe(1);
 });
 
+beforeEach(function () {
+    // Make sure TenantService is the real class, not a mock
+    $this->app->singleton(TenantService::class, function ($app) {
+        return new TenantService();
+    });
+});
+
 /*
 |--------------------------------------------------------------------------
 | Functions
@@ -41,7 +51,18 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function mockTenantService(User $user)
 {
-    // ..
+    app()->bind(TenantService::class, function () use ($user) {
+        return new class($user) {
+            public function __construct(private $user) {}
+            public function getId() { return $this->user->organization_id; }
+        };
+    });
+}
+
+function actingAsTenant(User $user)
+{
+    test()->actingAs($user);
+    app(TenantService::class)->setOrganization($user->organization);
 }

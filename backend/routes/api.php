@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\VendorController;
 use App\Http\Controllers\API\InvoiceController;
+use App\Http\Controllers\API\OrganizationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,4 +33,7 @@ Route::middleware(['auth:sanctum', 'set.tenant'])->group(function () {
 
     // Users CRUD (admin only)
     Route::apiResource('users', UserController::class)->middleware('can:manage-users');
+
+    // Organizations CRUD (admin only)
+    Route::apiResource('organizations', OrganizationController::class);
 });
