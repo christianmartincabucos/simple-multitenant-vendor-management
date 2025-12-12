@@ -18,15 +18,18 @@ class Vendor extends Model
         'address',
     ];
 
-    protected static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
         // Automatically set organization_id on creation
         static::creating(function ($vendor) {
             if (auth()->check() && auth()->user()->organization_id) {
                 $vendor->organization_id = auth()->user()->organization_id;
             }
         });
+    }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
     }
 }

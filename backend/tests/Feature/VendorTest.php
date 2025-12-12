@@ -1,11 +1,22 @@
 <?php
 
-use App\Models\Vendor;
 use App\Models\Organization;
+use App\Models\User;
+use App\Models\Vendor;
 use App\Services\TenantService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(RefreshDatabase::class);
+beforeEach(function () {
+    $this->orgA = Organization::factory()->create();
+    $this->orgB = Organization::factory()->create();
+
+    $this->userA = User::factory()->create(['organization_id' => $this->orgA->id]);
+    $this->userB = User::factory()->create(['organization_id' => $this->orgB->id]);
+});
+
+test('vendor organization relationship works correctly', function () {
+    $vendor = Vendor::factory()->create(['organization_id' => $this->orgA->id]);
+    $this->assertEquals($this->orgA->id, $vendor->organization->id);
+});
 
 test('vendor model applies tenant global scope', function () {
 

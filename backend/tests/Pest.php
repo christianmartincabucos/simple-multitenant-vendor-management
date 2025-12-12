@@ -51,15 +51,6 @@ beforeEach(function () {
 |
 */
 
-function mockTenantService(User $user)
-{
-    app()->bind(TenantService::class, function () use ($user) {
-        return new class($user) {
-            public function __construct(private $user) {}
-            public function getId() { return $this->user->organization_id; }
-        };
-    });
-}
 
 function actingAsTenant(User $user)
 {
