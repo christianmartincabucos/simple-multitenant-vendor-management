@@ -25,6 +25,7 @@
 ## Usage
 
 - Access the app at [http://localhost:8000](http://localhost:8000)
+- Frontend is available at [http://localhost:5173](http://localhost:5173)
 - API endpoints are available under `/api`
 
 ## Testing
